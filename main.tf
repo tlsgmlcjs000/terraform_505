@@ -1,8 +1,9 @@
-# main.tf (아주 간단한 시작)
-# 첫날은 로컬 명령어를 실행하는 것으로 감을 잡습니다.
-
-resource "null_resource" "hello_world" {
-  provisioner "local-exec" {
-    command = "echo '테라폼 실습 시작! 반갑습니다.'"
-  }
+module "my_web_servers" {
+  source   = "./modules/web-server"
+  
+  # 변수 파일의 web_servers 맵을 돌면서 하나씩 꺼내옴
+  for_each = var.web_servers
+  
+  # 모듈 내부의 server_name 변수에 Map의 Key값(서버 이름)을 전달
+  server_name = each.key
 }
